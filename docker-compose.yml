@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  nodeapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ${CODE_ABSOLUTE_PATH}:/node-starter
+    ports:
+      - "4000:4000"
+    environment:
+      MONGO_USER_NAME: ${MONGO_USER_NAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_DATABASE_NAME: ${MONGO_DATABASE_NAME}
+    networks:
+      - gpc
+
+  mongoDB:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    networks:
+      - gpc
+
+networks:
+  gpc:
+    driver: bridge
+    name: gpc_nw
